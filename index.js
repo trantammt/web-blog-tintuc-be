@@ -4,6 +4,8 @@ import sequelize from './config/database.js';         // Sequelize connect MySQL
 
 import authRoutes from './routes/authRoutes.js';      // Định tuyến đăng nhập
 import userRoutes from './routes/userRoutes.js';      // Các route xác thực
+import postRoutes from './routes/postRoutes.js';
+import commentRoutes from './routes/commentRoutes.js';
 
 dotenv.config();
 
@@ -13,6 +15,9 @@ app.use(express.json());                              // Middleware đọc JSON 
 // Gắn các route
 app.use('/api/auth', authRoutes);                     // Route đăng nhập (POST /login)
 app.use('/api/user', userRoutes);                     // Route lấy thông tin người dùng (/me)
+
+app.use('/api/posts', postRoutes);          
+app.use('/api', commentRoutes);                    
 
 // Kết nối CSDL MySQL
 sequelize.authenticate()
