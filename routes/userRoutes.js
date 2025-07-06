@@ -1,3 +1,4 @@
+// File: routes/userRoutes.js (ES Module style)
 import express from 'express';                         // Import Express Router
 import authMiddleware from '../middleware/authMiddleware.js'; // Middleware xác thực JWT
 import User from '../models/User.js';                  // Sequelize model User
@@ -5,8 +6,23 @@ import User from '../models/User.js';                  // Sequelize model User
 const router = express.Router();
 
 /**
- * Route: GET /api/user/me
- * Mục đích: Trả thông tin người dùng từ token JWT đã xác thực
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: Lấy thông tin người dùng đăng nhập
+ */
+
+/**
+ * @swagger
+ * /user/me:
+ *   get:
+ *     summary: Lấy thông tin user hiện tại
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Trả về thông tin user đang đăng nhập
  */
 router.get('/me', authMiddleware, async (req, res) => {
   try {
@@ -20,3 +36,4 @@ router.get('/me', authMiddleware, async (req, res) => {
 });
 
 export default router;
+

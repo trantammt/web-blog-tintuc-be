@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';                          // Load biến môi trường
 import express from 'express';                        // Import Express
 import sequelize from './config/database.js';         // Sequelize connect MySQL
+import { setupSwagger } from './swagger.js';
 
 import authRoutes from './routes/authRoutes.js';      // Định tuyến đăng nhập
 import userRoutes from './routes/userRoutes.js';      // Các route xác thực
@@ -23,11 +24,16 @@ app.use('/api', commentRoutes);
 app.use('/api', tagRoutes);     
 app.use('/api', categoryRoutes);
 
+
+// Đăng ký Swagger route tại /api-docs
+setupSwagger(app);
+
 // Kết nối CSDL MySQL
 sequelize.authenticate()
-  .then(() => console.log('✅ Kết nối MySQL thành công!'))
-  .catch((err) => console.error('❌ Lỗi kết nối DB:', err));
+  .then(() => console.log('Kết nối MySQL thành công!'))
+  .catch((err) => console.error('Lỗi kết nối DB:', err));
+
 
 // Khởi động server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server chạy tại http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server chạy tại http://localhost:${PORT}`));

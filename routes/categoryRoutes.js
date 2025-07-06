@@ -10,16 +10,95 @@ import {
 
 const router = express.Router();
 
-// Lấy tất cả category
+/**
+ * @swagger
+ * tags:
+ *   name: Categories
+ *   description: Quản lý chuyên mục bài viết
+ */
+
+/**
+ * @swagger
+ * /categories:
+ *   get:
+ *     summary: Lấy tất cả chuyên mục
+ *     tags: [Categories]
+ *     responses:
+ *       200:
+ *         description: Danh sách chuyên mục
+ */
 router.get('/categories', getAllCategories);
 
-// Tạo category mới
+/**
+ * @swagger
+ * /categories:
+ *   post:
+ *     summary: Tạo chuyên mục mới
+ *     tags: [Categories]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - slug
+ *             properties:
+ *               name:
+ *                 type: string
+ *               slug:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Đã tạo chuyên mục
+ */
 router.post('/categories', createCategory);
 
-// Cập nhật category theo ID
+/**
+ * @swagger
+ * /categories/{id}:
+ *   put:
+ *     summary: Cập nhật chuyên mục theo ID
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               slug:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Đã cập nhật chuyên mục
+ */
 router.put('/categories/:id', updateCategory);
 
-// Xoá category theo ID
+/**
+ * @swagger
+ * /categories/{id}:
+ *   delete:
+ *     summary: Xoá chuyên mục theo ID
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Đã xoá chuyên mục
+ */
 router.delete('/categories/:id', deleteCategory);
 
 export default router;
