@@ -6,6 +6,8 @@ import authRoutes from './routes/authRoutes.js';      // Định tuyến đăng 
 import userRoutes from './routes/userRoutes.js';      // Các route xác thực
 import postRoutes from './routes/postRoutes.js';
 import commentRoutes from './routes/commentRoutes.js';
+import tagRoutes from './routes/tagRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js'
 
 dotenv.config();
 
@@ -17,7 +19,9 @@ app.use('/api/auth', authRoutes);                     // Route đăng nhập (PO
 app.use('/api/user', userRoutes);                     // Route lấy thông tin người dùng (/me)
 
 app.use('/api/posts', postRoutes);          
-app.use('/api', commentRoutes);                    
+app.use('/api', commentRoutes);               
+app.use('/api', tagRoutes);     
+app.use('/api', categoryRoutes);
 
 // Kết nối CSDL MySQL
 sequelize.authenticate()
