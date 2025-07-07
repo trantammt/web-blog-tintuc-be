@@ -1,9 +1,7 @@
-// Mục đích: Xác thực người dùng và trả về JWT token
+// Mục đích: Đăng nhập và đăng ký tài khoản người dùng
 
-import express from 'express';                       // Express Router
-import bcrypt from 'bcryptjs';                       // Thư viện mã hoá password
-import User from '../models/User.js';                // Sequelize model người dùng
-import { generateToken } from '../utils/jwt.js';     // Hàm tạo token JWT
+import express from 'express';
+import { login, signup } from '../controllers/authController.js';
 
 const router = express.Router();
 
@@ -11,8 +9,41 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: Auth
- *   description: Đăng nhập hệ thống
+ *   description: Đăng nhập và đăng ký hệ thống
  */
+
+/**
+ * @swagger
+ * /auth/signup:
+ *   post:
+ *     summary: Đăng ký tài khoản mới
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Đăng ký thành công, trả về token
+ *       400:
+ *         description: Email đã được sử dụng
+ *       500:
+ *         description: Lỗi server
+ */
+router.post('/signup', signup);
 
 /**
  * @swagger
@@ -44,21 +75,6 @@ const router = express.Router();
  *       500:
  *         description: Lỗi server
  */
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const user = await User.findOne({ where: { email } });
-    if (!user) return res.status(400).json({ message: 'Email không tồn tại' });
-
-    const isMatch = await bcrypt.compare(password, user.password_hash);
-    if (!isMatch) return res.status(401).json({ message: 'Sai mật khẩu' });
-
-    const token = generateToken(user);
-    res.json({ token });
-  } catch (err) {
-    res.status(500).json({ message: 'Lỗi server', error: err.message });
-  }
-});
+router.post('/login', login);
 
 export default router;

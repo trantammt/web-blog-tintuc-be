@@ -1,21 +1,50 @@
-import { DataTypes } from 'sequelize';              // Sequelize types
-import sequelize from '../config/database.js';     // Kết nối CSDL
+// Mục đích: Định nghĩa cấu trúc bảng users và liên kết với role
 
-/**
- * Sequelize model ánh xạ bảng users
- */
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
+import Role from './Role.js';
+
 const User = sequelize.define('User', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: DataTypes.STRING,
-  email: { type: DataTypes.STRING, unique: true, allowNull: false },
-  password_hash: { type: DataTypes.STRING, allowNull: false },
-  role_id: { type: DataTypes.INTEGER, defaultValue: 1 },
-  avatar_url: DataTypes.STRING,
-  bio: DataTypes.TEXT,
-  created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: {
+    type: DataTypes.STRING(100),
+    allowNull: true
+  },
+  email: {
+    type: DataTypes.STRING(100),
+    allowNull: false,
+    unique: true
+  },
+  password_hash: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  role_id: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1
+  },
+  avatar_url: {
+    type: DataTypes.STRING(255),
+    allowNull: true
+  },
+  bio: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
+  created_at: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  }
 }, {
-  tableName: 'users',             // Tên bảng trong MySQL
-  timestamps: false               // Không dùng createdAt/updatedAt mặc định
+  tableName: 'users',
+  timestamps: false
 });
+
+// Thiết lập quan hệ: User thuộc về 1 Role
+User.belongsTo(Role, { foreignKey: 'role_id', as: 'role' });
 
 export default User;
